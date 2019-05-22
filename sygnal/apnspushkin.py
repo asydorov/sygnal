@@ -153,8 +153,8 @@ class ApnsPushkin(Pushkin):
 
     def get_payload_full(self, n):
         from_display = n.sender
-        if n.sender_display_name is not None:
-            from_display = n.sender_display_name
+        from_display = from_display.split(':')[0]
+        from_display = from_display.split('@')[1]
         from_display = from_display[0:MAX_FIELD_LENGTH]
 
         loc_key = None
