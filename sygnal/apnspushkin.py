@@ -238,17 +238,22 @@ class ApnsPushkin(Pushkin):
         elif n.type == 'm.room.member':
             if n.user_is_target:
                 if n.membership == 'invite':
-                    if n.room_name:
-                        loc_key = 'Invited you to chat'
-                        loc_args = [from_display, room_type]
-                        title = from_display
-                    elif n.room_alias:
-                        loc_key = 'Invited you to chat'
+                    if room_type == 3:
+                        loc_key = 'Contact request'
                         loc_args = [from_display, room_type]
                         title = from_display
                     else:
-                        loc_key = 'USER_INVITE_TO_CHAT'
-                        loc_args = [from_display]
+                        if n.room_name:
+                            loc_key = 'Invited you to chat'
+                            loc_args = [from_display, room_type]
+                            title = from_display
+                        elif n.room_alias:
+                            loc_key = 'Invited you to chat'
+                            loc_args = [from_display, room_type]
+                            title = from_display
+                        else:
+                            loc_key = 'USER_INVITE_TO_CHAT'
+                            loc_args = [from_display]
         elif n.type:
             # A type of message was received that we don't know about
             # but it was important enough for a push to have got to us
