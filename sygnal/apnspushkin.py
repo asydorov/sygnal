@@ -25,6 +25,7 @@ import logging
 import base64
 import time
 import gevent
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -156,6 +157,13 @@ class ApnsPushkin(Pushkin):
         from_display = from_display.split(':')[0]
         from_display = from_display.split('@')[1]
         from_display = from_display[0:MAX_FIELD_LENGTH]
+        
+        room_type = 0
+        try:
+            room_data = json.loads(n.room_name)
+            room_type = room_data["type"]
+        except:
+        
 
         loc_key = None
         loc_args = None
@@ -228,7 +236,7 @@ class ApnsPushkin(Pushkin):
                 if n.membership == 'invite':
                     if n.room_name:
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
-                        loc_args = [from_display, n.room_name[0:MAX_FIELD_LENGTH]]
+                        loc_args = [from_display, room_type]
                     elif n.room_alias:
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
                         loc_args = [from_display, n.room_alias[0:MAX_FIELD_LENGTH]]
