@@ -238,10 +238,11 @@ class ApnsPushkin(Pushkin):
                     if n.room_name:
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
                         loc_args = [from_display, room_type]
+                        title = "%s invited you to chat" % from_display
                     elif n.room_alias:
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
-                        loc_args = [from_display, n.room_alias[0:MAX_FIELD_LENGTH]]
-                        title = "You invited to chat"
+                        loc_args = [from_display, room_type]
+                        title = "%s invited you to chat" % from_display
                     else:
                         loc_key = 'USER_INVITE_TO_CHAT'
                         loc_args = [from_display]
