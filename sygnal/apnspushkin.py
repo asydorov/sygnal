@@ -169,6 +169,8 @@ class ApnsPushkin(Pushkin):
         loc_args = None
         title = None
         subtitle = None
+        body = None
+    
         if n.type == 'm.room.message' or n.type == 'm.room.encrypted':
             room_display = None
             if n.room_name:
@@ -240,12 +242,12 @@ class ApnsPushkin(Pushkin):
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
                         loc_args = [from_display, room_type]
                         title = from_display
-                        subtitle = "Invited you to chat"
+                        body = "Invited you to chat"
                     elif n.room_alias:
                         loc_key = 'USER_INVITE_TO_NAMED_ROOM'
                         loc_args = [from_display, room_type]
                         title = from_display
-                        subtitle = "Invited you to chat"
+                        body = "Invited you to chat"
                     else:
                         loc_key = 'USER_INVITE_TO_CHAT'
                         loc_args = [from_display]
@@ -269,6 +271,9 @@ class ApnsPushkin(Pushkin):
 
         if subtitle:
             aps['alert']['subtitle'] = subtitle
+
+        if body:
+            aps['alert']['body'] = body
 
         badge = None
         if n.counts.unread is not None:
