@@ -239,15 +239,13 @@ class ApnsPushkin(Pushkin):
             if n.user_is_target:
                 if n.membership == 'invite':
                     if n.room_name:
-                        loc_key = 'USER_INVITE_TO_NAMED_ROOM'
+                        loc_key = 'Invited you to chat'
                         loc_args = [from_display, room_type]
                         title = from_display
-                        body = "Invited you to chat"
                     elif n.room_alias:
-                        loc_key = 'USER_INVITE_TO_NAMED_ROOM'
+                        loc_key = 'Invited you to chat'
                         loc_args = [from_display, room_type]
                         title = from_display
-                        body = "Invited you to chat"
                     else:
                         loc_key = 'USER_INVITE_TO_CHAT'
                         loc_args = [from_display]
@@ -258,13 +256,12 @@ class ApnsPushkin(Pushkin):
             loc_args = [from_display]
 
         aps = {}
-        aps['alert'] = {}
 
-#        if loc_key:
-#            aps['alert'] = {'loc-key': loc_key }
-#
-#        if loc_args:
-#            aps['alert']['loc-args'] = loc_args
+        if loc_key:
+            aps['alert'] = {'loc-key': loc_key }
+
+        if loc_args:
+            aps['alert']['loc-args'] = loc_args
 
         if title:
             aps['alert']['title'] = title
