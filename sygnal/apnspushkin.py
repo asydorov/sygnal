@@ -256,6 +256,8 @@ class ApnsPushkin(Pushkin):
             loc_args = [from_display]
 
         aps = {}
+        aps['alert'] = {}
+
 #        if loc_key:
 #            aps['alert'] = {'loc-key': loc_key }
 #
