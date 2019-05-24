@@ -160,14 +160,14 @@ class ApnsPushkin(Pushkin):
             from_display = from_display.split('@')[1]
             from_display = from_display[0:MAX_FIELD_LENGTH]
         except:
-            logger.exception("Exception parsing from %s" % (n, ))
+            logger.exception("Exception parsing from %s event type %s" % (n.sender, n.type, ))
         
         room_type = 0
         try:
             room_data = json.loads(n.room_name)
             room_type = room_data["type"]
         except:
-            logger.exception("Exception parsing room name %s" % (n.room_name, ))
+            logger.exception("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
 
         loc_key = None
         loc_args = None
