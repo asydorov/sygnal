@@ -202,8 +202,9 @@ class ApnsPushkin(Pushkin):
                     loc_key = 'IMAGE_FROM_USER_IN_ROOM'
                     loc_args = [from_display, content_display, room_display]
                 elif content_display:
-                    loc_key = 'MSG_FROM_USER_IN_ROOM_WITH_CONTENT'
-                    loc_args = [from_display, room_display, content_display]
+                    loc_key = 'Sent you a message'
+                    loc_args = [from_display, room_type]
+                    title = from_display
                 elif action_display:
                     loc_key = 'ACTION_FROM_USER_IN_ROOM'
                     loc_args = [room_display, from_display, action_display]
