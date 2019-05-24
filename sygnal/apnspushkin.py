@@ -154,9 +154,13 @@ class ApnsPushkin(Pushkin):
 
     def get_payload_full(self, n):
         from_display = n.sender
-        from_display = from_display.split(':')[0]
-        from_display = from_display.split('@')[1]
-        from_display = from_display[0:MAX_FIELD_LENGTH]
+        
+        try:
+            from_display = from_display.split(':')[0]
+            from_display = from_display.split('@')[1]
+            from_display = from_display[0:MAX_FIELD_LENGTH]
+        except:
+            logger.exception("Exception parsing from %s" % (n.sender, ))
         
         room_type = 0
         try:
@@ -261,6 +265,8 @@ class ApnsPushkin(Pushkin):
             loc_args = [from_display]
 
         aps = {}
+
+        aps['alert'] = {}
 
         if loc_key:
             aps['alert'] = {'loc-key': loc_key }
