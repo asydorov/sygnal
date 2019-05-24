@@ -160,7 +160,7 @@ class ApnsPushkin(Pushkin):
             from_display = from_display.split('@')[1]
             from_display = from_display[0:MAX_FIELD_LENGTH]
         except:
-            logger.exception("Exception parsing from %s" % (n.sender, ))
+            logger.exception("Exception parsing from %s" % (n, ))
         
         room_type = 0
         try:
