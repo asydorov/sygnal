@@ -63,6 +63,7 @@ class ApnsPushkin(Pushkin):
     def setup(self, ctx):
         self.db = ctx.database
         self.certfile = self.getConfig('certfile')
+        self.voipcertfile = self.getConfig('voipcertfile')
         plaf = self.getConfig('platform')
         if not plaf or plaf == 'production' or plaf == 'prod':
             self.plaf = 'prod'
@@ -76,7 +77,11 @@ class ApnsPushkin(Pushkin):
 
         self.pushbaby = PushBaby(certfile=self.certfile, platform=self.plaf)
         self.pushbaby.on_push_failed = self.on_push_failed
+
+        self.voipbaby = PushBaby(certfile=self.voipcertfile, platform=self.plaf)
+        self.voipbaby.on_push_failed = self.on_push_failed
         logger.info("APNS with cert file %s on %s platform", self.certfile, self.plaf)
+        logger.info("APNS with cert file %s on %s platform", self.voipcertfile, self.plaf)
 
         # poll feedback in a little bit, not while we're busy starting up
         gevent.spawn_later(10, self.do_feedback_poll)
@@ -129,10 +134,31 @@ class ApnsPushkin(Pushkin):
         if n.prio == 'low':
             prio = 5
 
+        is_call_room = False
+        try:
+            room_data = json.loads(n.room_name)
+            room_type = room_data["type"]
+            is_call_room = (room_type == 4)
+        except:
+            logger.exception("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
+
+
         tries = 0
         for t,d in tokens.items():
+            is_voip_device = False
+            try:
+                if d.data["bctype"] == "voip":
+                    is_voip_device = True
+            except:
+                logger.exception("Failed to parse device data")
+
+            if (is_voip_device and not is_call_room):
+                continue
+            if (not is_voip_device and is_call_room):
+                continue
+
             logger.info("Have d.data is %s", d.data)
-            
+
             while tries < ApnsPushkin.MAX_TRIES:
                 thispayload = payload
                 if 'aps' in thispayload:
@@ -143,7 +169,10 @@ class ApnsPushkin(Pushkin):
                 logger.info("Sending (attempt %i): '%s' -> %s", tries, thispayload, t)
                 poke_start_time = time.time()
                 try:
-                    res = self.pushbaby.send(thispayload, base64.b64decode(t), priority=prio)
+                    if is_voip_device:
+                        res = self.voipbaby.send(thispayload, base64.b64decode(t), priority=prio)
+                    else:
+                        res = self.pushbaby.send(thispayload, base64.b64decode(t), priority=prio)
                     logger.info("Sent (%f secs): -> %s", time.time() - poke_start_time, t)
                     break
                 except:
