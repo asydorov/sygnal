@@ -245,7 +245,6 @@ def root():
 
 @app.route('/_matrix/push/v1/notify', methods=['POST'])
 def notify():
-    logger.warn(request.data)
     try:
         body = json.loads(request.data)
     except Exception:
@@ -258,7 +257,7 @@ def notify():
 
     try:
         notif = Notification(body['notification'])
-        logger.warn("*********** Room name: %s", notif.room_name)
+        logger.warn("*********** Room name: %s  event type: %s", notif.room_name, notif.type)
     except InvalidNotificationException as e:
         logger.exception("Invalid notification")
         flask.abort(400, e.message)
