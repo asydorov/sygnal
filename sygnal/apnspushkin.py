@@ -141,6 +141,7 @@ class ApnsPushkin(Pushkin):
             is_call_room = (room_type == 4)
         except:
             logger.exception("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
+            logger.exception("Room content: %s", n.content)
 
 
         tries = 0
