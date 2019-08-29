@@ -136,9 +136,10 @@ class ApnsPushkin(Pushkin):
 
         is_call_room = False
         try:
-            room_data = json.loads(n.room_name)
-            room_type = room_data["type"]
-            is_call_room = (room_type == 4)
+            if n.room_name is not None:
+                room_data = json.loads(n.room_name)
+                room_type = room_data["type"]
+                is_call_room = (room_type == 4)
         except:
             logger.info("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
             logger.info("Notification: %s", n)
@@ -157,8 +158,6 @@ class ApnsPushkin(Pushkin):
                 continue
             if (not is_voip_device and is_call_room):
                 continue
-
-            logger.info("Have d.data is %s", d.data)
 
             while tries < ApnsPushkin.MAX_TRIES:
                 thispayload = payload
