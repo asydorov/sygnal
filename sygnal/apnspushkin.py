@@ -131,6 +131,8 @@ class ApnsPushkin(Pushkin):
 
         tries = 0
         for t,d in tokens.items():
+            logger.info("Have d.data is %s", d.data)
+            
             while tries < ApnsPushkin.MAX_TRIES:
                 thispayload = payload
                 if 'aps' in thispayload:

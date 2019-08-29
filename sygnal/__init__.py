@@ -245,6 +245,7 @@ def root():
 
 @app.route('/_matrix/push/v1/notify', methods=['POST'])
 def notify():
+    logger.warn("Request data is %s", request.data)
     try:
         body = json.loads(request.data)
     except Exception:
