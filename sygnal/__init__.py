@@ -258,6 +258,7 @@ def notify():
 
     try:
         notif = Notification(body['notification'])
+        logger.warn("*********** Room name: %s", notif.room_name)
     except InvalidNotificationException as e:
         logger.exception("Invalid notification")
         flask.abort(400, e.message)
