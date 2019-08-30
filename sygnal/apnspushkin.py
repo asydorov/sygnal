@@ -201,8 +201,9 @@ class ApnsPushkin(Pushkin):
         
         room_type = 0
         try:
-            room_data = json.loads(n.room_name)
-            room_type = room_data["type"]
+            if n.room_name is not None:
+                room_data = json.loads(n.room_name)
+                room_type = room_data["type"]
         except:
             logger.exception("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
 
