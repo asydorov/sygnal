@@ -191,14 +191,15 @@ class ApnsPushkin(Pushkin):
         
         try:
             if from_display is not None:
-                from_display = from_display.split(':')[0]
-                from_display = from_display.split('@')[1]
-            
-                # Strip BC account prefix
-                if from_display.startswith(BC_Account_Prefix):
-                    from_display = from_display[len(BC_Account_Prefix):]
-            
-                from_display = from_display[0:MAX_FIELD_LENGTH]
+                if (':' in from_display) and ('@' in from_display):
+                    from_display = from_display.split(':')[0]
+                    from_display = from_display.split('@')[1]
+                
+                    # Strip BC account prefix
+                    if from_display.startswith(BC_Account_Prefix):
+                        from_display = from_display[len(BC_Account_Prefix):]
+                
+                    from_display = from_display[0:MAX_FIELD_LENGTH]
         except:
             logger.exception("Exception parsing from %s event type %s" % (n.sender, n.type, ))
         
