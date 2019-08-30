@@ -149,7 +149,7 @@ class ApnsPushkin(Pushkin):
             is_voip_device = False
             try:
                 if d.data is not None:
-                    if isinstance(d.data, dict):
+                    if (isinstance(d.data, dict) and ("bctype" in d.data)):
                         if d.data["bctype"] == "voip":
                             is_voip_device = True
             except:
