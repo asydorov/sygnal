@@ -167,7 +167,7 @@ class ApnsPushkin(Pushkin):
                     thispayload['aps'] = thispayload['aps'].copy()
                 if d.tweaks.sound:
                     thispayload['aps']['sound'] = d.tweaks.sound
-                logger.info("Sending (attempt %i): '%s' -> %s", tries, thispayload, t)
+                logger.info("Sending %s (attempt %i): '%s' -> %s", ("voip" if is_voip_device else "push"), tries, thispayload, t)
                 poke_start_time = time.time()
                 try:
                     if is_voip_device:
