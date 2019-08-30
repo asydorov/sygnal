@@ -145,6 +145,7 @@ class ApnsPushkin(Pushkin):
 
 
         tries = 0
+        logger.info("Prepare sending to tokens %s", tokens.items())
         for t,d in tokens.items():
             is_voip_device = False
             try:
