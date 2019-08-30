@@ -257,10 +257,6 @@ def notify():
 
     try:
         notif = Notification(body['notification'])
-        logger.warn("*********** Room name: %s  event type: %s", notif.room_name, notif.type)
-
-        if notif.room_name is None:
-            logger.warn("*********** Request data: %s", request.data)
     except InvalidNotificationException as e:
         logger.exception("Invalid notification")
         flask.abort(400, e.message)
