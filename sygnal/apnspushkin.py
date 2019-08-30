@@ -156,8 +156,10 @@ class ApnsPushkin(Pushkin):
                 logger.exception("Failed to parse device data")
 
             if (is_voip_device and not is_call_room):
+                logger.info("Ignore is_voip_device and not is_call_room")
                 continue
             if (not is_voip_device and is_call_room):
+                logger.info("Ignore not is_voip_device and is_call_room")
                 continue
 
             while tries < ApnsPushkin.MAX_TRIES:
