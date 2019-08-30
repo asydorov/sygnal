@@ -148,8 +148,10 @@ class ApnsPushkin(Pushkin):
         for t,d in tokens.items():
             is_voip_device = False
             try:
-                if d.data["bctype"] == "voip":
-                    is_voip_device = True
+                if d.data is not None:
+                    if isinstance(d.data, dict):
+                        if d.data["bctype"] == "voip":
+                            is_voip_device = True
             except:
                 logger.exception("Failed to parse device data")
 
@@ -188,14 +190,15 @@ class ApnsPushkin(Pushkin):
         from_display = n.sender
         
         try:
-            from_display = from_display.split(':')[0]
-            from_display = from_display.split('@')[1]
+            if from_display is not None:
+                from_display = from_display.split(':')[0]
+                from_display = from_display.split('@')[1]
             
-            # Strip BC account prefix
-            if from_display.startswith(BC_Account_Prefix):
-                from_display = from_display[len(BC_Account_Prefix):]
+                # Strip BC account prefix
+                if from_display.startswith(BC_Account_Prefix):
+                    from_display = from_display[len(BC_Account_Prefix):]
             
-            from_display = from_display[0:MAX_FIELD_LENGTH]
+                from_display = from_display[0:MAX_FIELD_LENGTH]
         except:
             logger.exception("Exception parsing from %s event type %s" % (n.sender, n.type, ))
         
