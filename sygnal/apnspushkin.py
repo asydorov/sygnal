@@ -293,7 +293,7 @@ class ApnsPushkin(Pushkin):
                         loc_args = [from_display, room_type]
                         title = from_display
                     elif room_type == 4 and n.room_id is not None:
-                        body = json.dumps({'roomid': n.room_id})
+                        body = {'roomid': n.room_id}
                     else:
                         if n.room_name:
                             loc_key = 'Invited you to chat'
