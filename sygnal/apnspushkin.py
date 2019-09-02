@@ -292,7 +292,7 @@ class ApnsPushkin(Pushkin):
                         loc_key = 'Contact request'
                         loc_args = [from_display, room_type]
                         title = from_display
-                    elif room_type == 4 and room_id:
+                    elif room_type == 4 and n.room_id is not None:
                         body = json.dumps({'roomid': n.room_id})
                     else:
                         if n.room_name:
