@@ -314,7 +314,8 @@ class ApnsPushkin(Pushkin):
 
         aps = {}
 
-        aps['alert'] = {}
+        if loc_key or loc_args or title or subtitle or body:
+            aps['alert'] = {}
 
         if loc_key:
             aps['alert'] = {'loc-key': loc_key }
