@@ -144,7 +144,7 @@ class ApnsPushkin(Pushkin):
             logger.info("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
 
         if is_call_room and (n.type != "m.call.invite"):
-            logger.info("Rejecting call before call invite %s", n.type)
+            logger.info("Rejecting call before call invite %s", n)
             return rejected
 
         if is_call_room:
