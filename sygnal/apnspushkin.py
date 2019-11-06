@@ -143,6 +143,8 @@ class ApnsPushkin(Pushkin):
         except:
             logger.info("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
 
+        if is_call_room and (n.type is not 'm.call.invite'):
+            return rejected
 
         tries = 0
         logger.info("Prepare sending to tokens %s", tokens.items())
