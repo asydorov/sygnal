@@ -135,20 +135,19 @@ class ApnsPushkin(Pushkin):
             prio = 5
 
         is_call_room = False
+        call_from = ""
         try:
             if n.room_name is not None:
                 room_data = json.loads(n.room_name)
                 room_type = room_data["type"]
+                call_from = room_data["from"]
                 is_call_room = (room_type == 4)
         except:
             logger.info("Exception parsing room name %s event type %s" % (n.room_name, n.type, ))
 
-        if is_call_room and (n.type != "m.call.invite"):
-            logger.info("Rejecting call before call invite %s", n.room_name)
+        if is_call_room and (n.type == "m.call.invite"):
+            logger.info("Rejecting call invite")
             return rejected
-
-        if is_call_room:
-            logger.info("Call invite received. n=%s", n)
 
         tries = 0
         logger.info("Prepare sending to tokens %s", tokens.items())
@@ -300,6 +299,21 @@ class ApnsPushkin(Pushkin):
                         title = from_display
                     elif room_type == 4 and n.room_id is not None:
                         body = {'roomid': n.room_id}
+                        is_video_call = False
+
+                        # This detection works only for hs that uses WebRTC for calls
+                        if n.content and 'offer' in n.content and 'sdp' in n.content['offer']:
+                            sdp = n.content['offer']['sdp']
+                            if 'm=video' in sdp:
+                                is_video_call = True
+
+                        if is_video_call:
+                            loc_key = 'VIDEO_CALL_FROM_USER'
+                        else:
+                            loc_key = 'VOICE_CALL_FROM_USER'
+
+                        loc_args = [from_display]
+
                     else:
                         if n.room_name:
                             loc_key = 'Invited you to chat'
